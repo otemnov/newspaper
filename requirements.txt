@@ -4,3 +4,4 @@ nltk
 Pillow
 cssselect
 BeautifulSoup
+Flask==0.9
