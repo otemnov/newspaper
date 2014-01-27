@@ -60,7 +60,7 @@ class Configuration(object):
         # unique stopword classes for oriental languages, don't toggle
         self.stopwords_class = StopWords
 
-        self.browser_user_agent = 'newspaper/%s' % __version__
+        self.browser_user_agent = 'Mozilla/5.0 (Windows NT 6.1; WOW64)'
         self.request_timeout = 7
         self.number_threads = 10 # number of threads when mthreading
 
