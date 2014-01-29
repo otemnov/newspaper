@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello():
     url = request.args.get('url', '')
-    a = Article(url)
+    a = Article(url, image_dimension_ration = 3)
     a.download()
     a.parse()
     a.nlp()
