@@ -84,10 +84,6 @@ class Parser(object):
         except:
             pass
         try:
-            return doc.xpath('/html/head/link[@rel="icon"][1]/@href')[0]
-        except:
-            pass
-        try:
             return doc.xpath('/html/head/link[@rel="img_src"][1]/@href')[0]
         except:
             pass
