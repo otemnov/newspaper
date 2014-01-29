@@ -9,7 +9,7 @@ from newspaper import Article
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
+def read_newspaper():
     url = request.args.get('url', '')
     a = Article(url, image_dimension_ration = 3)
     a.download()
