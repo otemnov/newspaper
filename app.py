@@ -15,7 +15,7 @@ def read_newspaper():
     a.download()
     a.parse()
     a.nlp()
-    return jsonify(top_image = a.top_image, text = a.text, title = a.title, summary = a.summary, images = a.images, movies = a.movies)
+    return jsonify(top_image = a.top_image, text = a.text, title = a.title, summary = a.summary, images = a.images, movies = a.movies, meta_data = a.meta_data)
 
 if __name__ == '__main__':
     nltk.data.path.append('./nltk_data/')
