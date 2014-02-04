@@ -80,15 +80,15 @@ class Parser(object):
         running as method == 'soup' assumes lxml's soupparser.
         """
         try:
-            return doc.xpath('/html/head/meta[@property="og:image"][1]/@content')[0]
+            return doc.xpath('//meta[@property="og:image"][1]/@content')[0]
         except:
             pass
         try:
-            return doc.xpath('/html/head/link[@rel="img_src"][1]/@href')[0]
+            return doc.xpath('//link[@rel="img_src"][1]/@href')[0]
         except:
             pass
         try:
-            return doc.xpath('/html/head/meta[@name="og:image"][1]/@content')[0]
+            return doc.xpath('//meta[@name="og:image"][1]/@content')[0]
         except:
             pass
         return None
@@ -125,7 +125,7 @@ class Parser(object):
         Returns the meta "type" of an article.
         """
         try:
-            return doc.xpath('/html/head/meta[@property="og:type"][1]/@content')[0]
+            return doc.xpath('//meta[@property="og:type"][1]/@content')[0]
         except Exception, e:
             print str(e)
             log.critical(e)
