@@ -1,21 +1,31 @@
 import os
+
 import nltk
-from flask import Flask
-from flask import request
-from flask import jsonify
+
+from flask import (Flask, request, Response, json)
+
 from newspaper import Article
 
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def read_newspaper():
     url = request.args.get('url', '')
-    a = Article(url, image_dimension_ration = 3)
-    a.download()
-    a.parse()
-    a.nlp()
-    return jsonify(top_image = a.top_image, text = a.text, title = a.title, summary = a.summary, images = a.images, movies = a.movies, meta_data = a.meta_data)
+    if url:
+        a = Article(url, image_dimension_ration=3)
+        a.download()
+        a.parse()
+        a.nlp()
+        json_string = json.dumps(
+            dict(top_image=a.top_image, text=a.text, title=a.title, summary=a.summary, images=a.images,
+                 movies=a.movies),
+            ensure_ascii=False,
+            indent=None if request.is_xhr else 2)
+        return Response(json_string, mimetype='application/json')
+    return Response()
+
 
 if __name__ == '__main__':
     nltk.data.path.append('./nltk_data/')
