@@ -136,10 +136,11 @@ class Parser(object):
         return node.cssselect(selector)
 
     @classmethod
-    def fromstring(cls, html):
+    def fromstring(cls, html, original_encoding='utf-8'):
         html = encodeValue(html)
         try:
-            cls.doc = lxml.html.fromstring(html)
+            parser = lxml.html.HTMLParser(encoding=original_encoding)
+            cls.doc = lxml.html.fromstring(html.encode(original_encoding), parser=parser)
         except Exception, e:
             print '[Parse lxml ERR]', str(e)
             return None

@@ -88,6 +88,9 @@ class Article(object):
         # the article's unchanged and raw html
         self.html = u''
 
+        # default encoding
+        self.original_encoding = None
+
         # The html of the main article node
         self.article_html = u''
 
@@ -141,8 +144,9 @@ class Article(object):
         Downloads the link's html content, don't use if we are async
         downloading batch articles.
         """
-        html = network.get_html(self.url, self.config)
-        self.set_html(html)
+        html_result = network.get_html_result(self.url, self.config)
+        self.set_html(html_result.html)
+        self.set_original_encoding(html_result.original_encoding)
 
     def parse(self):
         """
@@ -151,7 +155,7 @@ class Article(object):
             print 'You must download() an article before parsing it!'
             raise ArticleException()
 
-        self.doc = self.parser.fromstring(self.html)
+        self.doc = self.parser.fromstring(self.html, self.original_encoding)
         self.raw_doc = copy.deepcopy(self.doc)
 
         if self.doc is None:
@@ -401,6 +405,9 @@ class Article(object):
         text = encodeValue(text)
         if text:
             self.text = text
+
+    def set_original_encoding(self, original_encoding):
+        self.original_encoding = original_encoding
 
     def set_html(self, html):
         """

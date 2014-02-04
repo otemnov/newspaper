@@ -10,6 +10,7 @@ __copyright__ = 'Copyright 2014, Lucas Ou-Yang'
 
 import logging
 import requests
+import collections
 
 from .settings import cj
 from .configuration import Configuration
@@ -28,8 +29,10 @@ def get_request_kwargs(timeout, useragent):
         'timeout' : timeout,
         'allow_redirects' : True
     }
-
 def get_html(url, config=None, response=None):
+    return get_html_result(url, config, response).html
+
+def get_html_result(url, config=None, response=None):
     """
     Retrieves the html for either a url or a response object. All html
     extractions MUST come from this method due to some intricies in the
@@ -38,31 +41,32 @@ def get_html(url, config=None, response=None):
     to ISO-8859-1 if it doesn't find one. This results in incorrect character
     encoding in a lot of cases.
     """
+    HtmlResult = collections.namedtuple('HtmlResult', ['html', 'original_encoding'])
     FAIL_ENCODING = 'ISO-8859-1'
     config =  config or Configuration()
-    useragent = config.browser_user_agent
+    user_agent = config.browser_user_agent
     timeout = config.request_timeout
 
     if response is not None:
         if response.encoding != FAIL_ENCODING:
             return response.text
-        return response.content # not unicode, fix later
+        return HtmlResult(response.content, response.encoding)  # not unicode, fix later
 
     try:
         html = None
-        response = requests.get(url=url, **get_request_kwargs(timeout, useragent))
+        response = requests.get(url=url, **get_request_kwargs(timeout, user_agent))
         if response.encoding != FAIL_ENCODING:
             html = response.text
         else:
             html = response.content # not unicode, fix later
         if html is None:
             html = u''
-        return html
+        return HtmlResult(html, response.encoding)
 
     except Exception, e:
         # print '[REQUEST FAILED]', str(e)
         log.debug('%s on %s' % (e, url))
-        return u''
+        return HtmlResult(u'', u'utf-8')
 
 class MRequest(object):
     """
