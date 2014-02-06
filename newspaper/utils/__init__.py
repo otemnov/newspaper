@@ -265,14 +265,14 @@ def clear_memo_cache(source):
     else:
         print 'memo file for', source.domain, 'has already been deleted!'
 
-def encodeValue(value):
+def encodeValue(value, encoding='utf-8'):
     """
     """
     if value is None:
         return u''
     string_org = value
     try:
-        value = smart_unicode(value)
+        value = smart_unicode(value, encoding=encoding)
     except (UnicodeEncodeError, DjangoUnicodeDecodeError):
         value = smart_str(value)
     except:

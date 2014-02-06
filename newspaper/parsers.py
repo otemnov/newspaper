@@ -137,7 +137,7 @@ class Parser(object):
 
     @classmethod
     def fromstring(cls, html, original_encoding='utf-8'):
-        html = encodeValue(html)
+        html = encodeValue(html, encoding=original_encoding)
         try:
             parser = lxml.html.HTMLParser(encoding=original_encoding)
             cls.doc = lxml.html.fromstring(html.encode(original_encoding), parser=parser)
