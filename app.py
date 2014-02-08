@@ -14,7 +14,7 @@ app = Flask(__name__)
 def read_newspaper():
     url = request.args.get('url', '')
     if url:
-        a = Article(url, image_dimension_ration=3)
+        a = Article(url, image_dimension_ration=3, keep_article_html=True)
         a.download()
         a.parse()
         a.nlp()
