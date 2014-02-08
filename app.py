@@ -19,7 +19,7 @@ def read_newspaper():
         a.parse()
         a.nlp()
         json_string = json.dumps(
-            dict(top_image=a.top_image, text=a.text, title=a.title, summary=a.summary, images=a.images,
+            dict(top_image=a.top_image, text=a.article_html, title=a.title, summary=a.summary, images=a.images,
                  movies=a.movies),
             ensure_ascii=False,
             indent=None if request.is_xhr else 2)
